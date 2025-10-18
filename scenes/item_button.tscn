@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqj5c1h2p7586"]
+
+[ext_resource type="Texture2D" uid="uid://35wwfu7y5x5k" path="res://textures/items/axe.png" id="1_uqwrt"]
+[ext_resource type="Script" uid="uid://cvay0fbxvjkr2" path="res://scripts/item_button.gd" id="1_wcc7j"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wcc7j"]
+font_size = 24
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dk8qb"]
+font_size = 14
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="ItemButton" type="Button"]
+custom_minimum_size = Vector2(64, 64)
+script = ExtResource("1_wcc7j")
+
+[node name="Texture" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_uqwrt")
+expand_mode = 2
+
+[node name="Amount" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 21.0
+text = " 1"
+label_settings = SubResource("LabelSettings_wcc7j")
+
+[node name="Keybind" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "[1] "
+label_settings = SubResource("LabelSettings_dk8qb")
+horizontal_alignment = 2
+vertical_alignment = 2
