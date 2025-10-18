@@ -6,6 +6,7 @@ var world_time = 0
 var world_state = "day"
 
 var lastSpawn = 0
+var next_fishing_loot_table = null
 
 var item_button_scene = preload("res://scenes/item_button.tscn")
 var crafting_recipe_button_scene = preload("res://scenes/crafting_recipe_button.tscn")
@@ -41,7 +42,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	time += delta
-	world_time += delta
 	
 	hud.get_node("Icons/Container/Health").value = player.health
 	hud.get_node("Icons/Container/Hunger").value = player.hunger
@@ -49,7 +49,9 @@ func _process(delta: float) -> void:
 	
 	if world_state == "night":
 		# Nights should be 60 seconds long
-		world_time += delta * (60/450)
+		world_time += delta * (450 / 30)
+	else:
+		world_time += delta
 	
 	if world_time > 450:
 		world_time = 0
@@ -66,14 +68,14 @@ func _process(delta: float) -> void:
 	if world_state == "day":
 		$NightSky.modulate.a /= 1.1
 		hud.get_node("Time/HFlowContainer/Day").visible = true
-		hud.get_node("Time/HFlowContainer/Day").value = 600 - world_time
+		hud.get_node("Time/HFlowContainer/Day").value = 450 - world_time
 		hud.get_node("Time/HFlowContainer/Night").visible = false
 	elif world_state == "night":
 		if $NightSky.modulate.a < 0.01:
 			$NightSky.modulate.a = 0.01
 		$NightSky.modulate.a /= 0.98
 		hud.get_node("Time/HFlowContainer/Night").visible = true
-		hud.get_node("Time/HFlowContainer/Night").value = 600 - world_time
+		hud.get_node("Time/HFlowContainer/Night").value = 450 - world_time
 		hud.get_node("Time/HFlowContainer/Day").visible = false
 		
 		lastSpawn += delta
@@ -183,7 +185,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_craft_button_pressed() -> void:
-	if player.inventory.size() >= 8:
+	if player.inventory.size() >= 10:
 		return
 	
 	if not crafting_menu_panel.get_meta("recipe"):

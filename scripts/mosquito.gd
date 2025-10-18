@@ -29,3 +29,11 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 		
 		position = Vector2(9e10, 9e10)
 		queue_free()
+
+
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	print(area)
+	if area.get_name() == "SwingHitbox":
+		if player.inventory[player.selected_item].id == "bug_net":
+			position = Vector2(9e10, 9e10)
+			queue_free()

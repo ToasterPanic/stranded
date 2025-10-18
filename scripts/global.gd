@@ -32,6 +32,10 @@ var items = {
 	"bug_net": {
 		"name": "Bug Net",
 		"description": "Catches bugs.",
+	},
+	"wooden_spikes": {
+		"name": "Wooden Spikes",
+		"description": "A trap for unsuspecting intruders.\n\n[Left Click] to place.",
 	}
 }
 
@@ -56,6 +60,24 @@ var recipes = {
 				"amount": 2
 			},
 		]
+	},
+	"wooden_spikes": {
+		"amount": 1,
+		"ingredients": [
+			{
+				"id": "planks",
+				"amount": 5
+			}
+		]
+	},
+	"wood_bait": {
+		"amount": 2,
+		"ingredients": [
+			{
+				"id": "planks",
+				"amount": 1
+			}
+		]
 	}
 }
 
@@ -71,6 +93,7 @@ var nights = {
 		"enemies": [
 			"mosquito"
 		],
+		"length": 30,
 	},
 	1: {
 		"hazards": [
@@ -79,6 +102,7 @@ var nights = {
 		"enemies": [
 			"mosquito"
 		],
+		"length": 30,
 	},
 	2: {
 		"hazards": [
@@ -136,7 +160,7 @@ var loot_tables = {
 			"amount": 2,
 			"chance": 3
 		}
-	]
+	],
 }
 
 func _ready() -> void:

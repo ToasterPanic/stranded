@@ -64,10 +64,17 @@ func _process(delta: float) -> void:
 				return
 			
 			hud.get_node("Tension/ProgressBar").value = tension
-			hud.get_node("Tension/Label").text = currentInput
+			if currentInput == "move_up":
+				hud.get_node("Tension/Arrow").rotation_degrees += (0 - hud.get_node("Tension/Arrow").rotation_degrees) * 0.1333
+			elif currentInput == "move_down":
+				hud.get_node("Tension/Arrow").rotation_degrees += (180 - hud.get_node("Tension/Arrow").rotation_degrees) * 0.1333
+			elif currentInput == "move_left":
+				hud.get_node("Tension/Arrow").rotation_degrees += (-90 - hud.get_node("Tension/Arrow").rotation_degrees) * 0.1333
+			elif currentInput == "move_right":
+				hud.get_node("Tension/Arrow").rotation_degrees += (90 - hud.get_node("Tension/Arrow").rotation_degrees) * 0.1333
 		else:
 			if lastChance > 4:
-				lastChance = 0
+				lastChance = 1.5
 				if randi_range(0, 0) == 0:
 					print("TEST")
 					reeling = true
@@ -95,12 +102,17 @@ func _process(delta: float) -> void:
 				reeling = false
 				
 				var chance = randi_range(0, 2)
-				var loot_table = null
+				var loot_table = world.next_fishing_loot_table
+				world.next_fishing_loot_table = null
 				
-				if chance == 0:
-					loot_table = Global.loot_tables["fish_fishing"]
+				if loot_table:
+					print(loot_table)
+					loot_table = Global.loot_tables[loot_table]
 				else:
-					loot_table = Global.loot_tables["gear_fishing"]
+					if chance == 0:
+						loot_table = Global.loot_tables["fish_fishing"]
+					else:
+						loot_table = Global.loot_tables["gear_fishing"]
 				
 				var item = loot_table[randi_range(0, loot_table.size() - 1)]
 				
@@ -122,7 +134,7 @@ func _process(delta: float) -> void:
 				
 				fishing = true
 				reeling = false
-				lastChance = -2
+				lastChance = 0
 				
 				n.busy = true
 				n.can_move = false
