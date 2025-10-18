@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b77o21sm7rvic"]
+[gd_scene load_steps=29 format=3 uid="uid://b77o21sm7rvic"]
 
 [ext_resource type="Texture2D" uid="uid://cu3pcbv4atndf" path="res://textures/island.png" id="1_lnu2h"]
 [ext_resource type="Script" uid="uid://v55i6ksw6cxw" path="res://scripts/game.gd" id="1_p57ef"]
@@ -7,11 +7,20 @@
 [ext_resource type="Script" uid="uid://bc05s084dh0f3" path="res://scripts/player.gd" id="4_iywne"]
 [ext_resource type="Texture2D" uid="uid://b0dv6p8ls1da3" path="res://textures/player.png" id="4_lbhrr"]
 [ext_resource type="Script" uid="uid://dfqskajsq2yjk" path="res://scripts/fishing_rod.gd" id="6_dinhu"]
+[ext_resource type="Texture2D" uid="uid://b3b4lan8eifsb" path="res://textures/campfire.png" id="7_ca42v"]
+[ext_resource type="Texture2D" uid="uid://dtydkbvgcu421" path="res://textures/bobber.png" id="7_ssvqc"]
 [ext_resource type="Texture2D" uid="uid://b8nyr6ig4wtqy" path="res://textures/fishing_rod.png" id="7_u5sy4"]
 [ext_resource type="Theme" uid="uid://de2pa48kj2e18" path="res://scenes/ui_theme.tres" id="8_gee14"]
+[ext_resource type="Texture2D" uid="uid://ctkkh5hp8fggf" path="res://textures/fire.png" id="8_rysoc"]
+[ext_resource type="Script" uid="uid://deuwy600lrhb8" path="res://scripts/campfire.gd" id="8_ssvqc"]
 [ext_resource type="Texture2D" uid="uid://dajjxy522i7eo" path="res://textures/health.png" id="9_kvpfn"]
 [ext_resource type="Texture2D" uid="uid://dam2angeehhcj" path="res://textures/hunger.png" id="10_dinhu"]
 [ext_resource type="Texture2D" uid="uid://cc6cke5o8cls7" path="res://textures/thirst.png" id="11_kvuet"]
+[ext_resource type="Texture2D" uid="uid://bgbtipb5bxaxs" path="res://textures/sun.png" id="13_trtic"]
+[ext_resource type="Texture2D" uid="uid://ya4fjhnknclv" path="res://textures/moon.png" id="14_ir15t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ssvqc"]
+size = Vector2(99999, 64)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kvuet"]
 radius = 72.0
@@ -21,8 +30,35 @@ font_size = 24
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_264po"]
+radius = 40.0
+
+[sub_resource type="Curve" id="Curve_ssvqc"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.106060594, 1), 0.0, 0.0, 0, 0, Vector2(0.9015152, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_264po"]
+curve = SubResource("Curve_ssvqc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1kice"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 75.0
+initial_velocity_max = 75.0
+gravity = Vector3(0, 98, 0)
+alpha_curve = SubResource("CurveTexture_264po")
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_iywne"]
 radius = 64.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_ssvqc"]
+font_size = 128
+outline_size = 12
+
+[sub_resource type="LabelSettings" id="LabelSettings_dinhu"]
+font_size = 20
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_p57ef")
@@ -43,7 +79,6 @@ grow_vertical = 2
 color = Color(0.8004687, 0.91291225, 1, 1)
 
 [node name="NightSky" type="ColorRect" parent="."]
-visible = false
 custom_minimum_size = Vector2(9999999, 9999999)
 anchors_preset = 8
 anchor_left = 0.5
@@ -68,17 +103,36 @@ position = Vector2(0, -80)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("2_lbhrr")
 
+[node name="Water3" type="Sprite2D" parent="Water"]
+position = Vector2(3072, 0)
+texture = ExtResource("2_lbhrr")
+
 [node name="Water2" type="Sprite2D" parent="."]
 position = Vector2(0, -80)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_iywne")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Water4" type="Sprite2D" parent="Water2"]
+position = Vector2(3072, 0)
+texture = ExtResource("3_iywne")
+
+[node name="Camera" type="Camera2D" parent="."]
+limit_left = -800
+limit_right = 2000
+limit_bottom = 496
+position_smoothing_enabled = true
+position_smoothing_speed = 25.0
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
 polygon = PackedVector2Array(-976, 555, -413, 294, 420, 294, 1031, 553)
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(-19, 454)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("RectangleShape2D_ssvqc")
 
 [node name="FishingRod" type="Sprite2D" parent="."]
 position = Vector2(405, 226)
@@ -98,6 +152,43 @@ offset_bottom = -57.0
 size_flags_horizontal = 4
 text = "[E] Go Fish"
 label_settings = SubResource("LabelSettings_u5sy4")
+
+[node name="Bobber" type="RigidBody2D" parent="FishingRod"]
+
+[node name="Sprite" type="Sprite2D" parent="FishingRod/Bobber"]
+texture = ExtResource("7_ssvqc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FishingRod/Bobber"]
+shape = SubResource("CircleShape2D_264po")
+
+[node name="Campfire" type="Sprite2D" parent="."]
+position = Vector2(-1, 226)
+texture = ExtResource("7_ca42v")
+script = ExtResource("8_ssvqc")
+
+[node name="Area" type="Area2D" parent="Campfire"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Campfire/Area"]
+shape = SubResource("CircleShape2D_kvuet")
+
+[node name="Label" type="Label" parent="Campfire"]
+offset_left = -72.0
+offset_top = -89.0
+offset_right = 73.0
+offset_bottom = -55.0
+size_flags_horizontal = 4
+text = "[E] Skip Day"
+label_settings = SubResource("LabelSettings_u5sy4")
+
+[node name="Fire" type="GPUParticles2D" parent="Campfire"]
+emitting = false
+texture = ExtResource("8_rysoc")
+process_material = SubResource("ParticleProcessMaterial_1kice")
+
+[node name="Light" type="PointLight2D" parent="Campfire"]
+visible = false
+texture = ExtResource("13_trtic")
+texture_scale = 3.0
 
 [node name="Player" type="CharacterBody2D" parent="."]
 script = ExtResource("4_iywne")
@@ -166,6 +257,51 @@ texture_under = ExtResource("11_kvuet")
 texture_progress = ExtResource("11_kvuet")
 tint_under = Color(0, 0, 0, 1)
 
+[node name="Time" type="Panel" parent="CanvasLayer/Control"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -144.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 144.0
+grow_horizontal = 0
+theme = ExtResource("8_gee14")
+
+[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/Control/Time"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Day" type="TextureProgressBar" parent="CanvasLayer/Control/Time/HFlowContainer"]
+visible = false
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+max_value = 600.0
+value = 100.0
+fill_mode = 4
+texture_under = ExtResource("13_trtic")
+texture_progress = ExtResource("13_trtic")
+tint_under = Color(0, 0, 0, 1)
+
+[node name="Night" type="TextureProgressBar" parent="CanvasLayer/Control/Time/HFlowContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+max_value = 600.0
+value = 100.0
+fill_mode = 4
+texture_under = ExtResource("14_ir15t")
+texture_progress = ExtResource("14_ir15t")
+tint_under = Color(0, 0, 0, 1)
+
 [node name="Hotbar" type="Panel" parent="CanvasLayer/Control"]
 custom_minimum_size = Vector2(560, 72)
 layout_mode = 1
@@ -190,7 +326,59 @@ offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Tension" type="Panel" parent="CanvasLayer/Control"]
+custom_minimum_size = Vector2(560, 72)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_gee14")
+
+[node name="Container" type="HFlowContainer" parent="CanvasLayer/Control/Tension"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Control/Tension"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("8_gee14")
+value = 50.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Tension"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.5
+offset_top = -10.5
+offset_right = 48.5
+offset_bottom = 10.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "100%"
+label_settings = SubResource("LabelSettings_ssvqc")
+
 [node name="Crafting" type="Panel" parent="CanvasLayer/Control"]
+visible = false
 custom_minimum_size = Vector2(256, 72)
 layout_mode = 1
 anchors_preset = 8
@@ -216,3 +404,42 @@ offset_top = 8.0
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="HintControls" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -21.0
+offset_right = 40.0
+grow_vertical = 0
+text = "[Left Click] Use Item
+[E] Interact
+[1] - [8] Switch Item
+[TAB] Crafting
+[ESC] Pause"
+label_settings = SubResource("LabelSettings_dinhu")
+
+[node name="HoverText" type="PanelContainer" parent="CanvasLayer/Control"]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -86.0
+offset_top = -34.0
+offset_right = 86.0
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("8_gee14")
+
+[node name="Text" type="RichTextLabel" parent="CanvasLayer/Control/HoverText"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[font size=24]Planks[/font]
+test test2"
+fit_content = true
+scroll_active = false

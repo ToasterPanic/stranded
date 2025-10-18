@@ -13,6 +13,12 @@ var inventory = [
 
 var selected_item = 0
 var busy = false
+var can_move = true
+
+var health = 100
+var hunger = 100
+var thirst = 100
+
 
 func add_item(id: String, amount: int) -> bool:
 	for n in inventory:
@@ -29,7 +35,7 @@ func add_item(id: String, amount: int) -> bool:
 	if item.amount < 1:
 		item.amount = 1
 		
-	inventory.push_front(item)
+	inventory.push_back(item)
 		
 	return true
 
@@ -49,4 +55,4 @@ func _process(delta: float) -> void:
 			
 		i += 1
 	
-	move_and_slide()
+	if can_move: move_and_slide()
