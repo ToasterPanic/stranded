@@ -47,7 +47,7 @@ func _process(delta: float) -> void:
 				bobber.linear_velocity.x = -128
 				tension += 66 * delta
 			else:
-				tension -= 30 * delta
+				tension -= 45 * delta
 				
 			if tension < 0:
 				
@@ -75,6 +75,7 @@ func _process(delta: float) -> void:
 					
 					hud.get_node("Tension").visible = true
 	else:
+		hud.get_node("Tension").visible = false
 		camera.zoom.x += (1 - camera.zoom.x) * 0.1
 		camera.zoom.y = camera.zoom.x
 		camera.position = Vector2(0, 0)
@@ -82,6 +83,10 @@ func _process(delta: float) -> void:
 		
 	bobber.rotation = 0
 	bobber.get_node("Sprite").position.y = sin(world.time * 2) * 5
+	
+	bobber.get_node("Line2D").points[1] = bobber.position * -1
+	bobber.get_node("Line2D").points[1] -= Vector2(-10, 32)
+	bobber.get_node("Line2D").points[0].y = -32 + $Bobber/Sprite.position.y
 		
 	$Label.visible = false
 	for n in $Area.get_overlapping_bodies():
@@ -116,11 +121,16 @@ func _process(delta: float) -> void:
 				hud.get_node("Tension").visible = false
 				
 				fishing = true
+				reeling = false
 				lastChance = -2
 				
 				n.busy = true
 				n.can_move = false
 				
-				bobber.position = Vector2(0, 0)
+				PhysicsServer2D.body_set_state(
+					bobber.get_rid(),
+					PhysicsServer2D.BODY_STATE_TRANSFORM,
+					Transform2D.IDENTITY.translated(global_position)
+				)
 				bobber.linear_velocity = Vector2(0, 0)
 				bobber.apply_impulse(Vector2(480, -480))

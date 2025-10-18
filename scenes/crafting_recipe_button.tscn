@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://cydbcpxrcgr5b"]
+
+[ext_resource type="Texture2D" uid="uid://35wwfu7y5x5k" path="res://textures/items/axe.png" id="1_3yyji"]
+
+[node name="CraftingRecipeButtons" type="Button"]
+custom_minimum_size = Vector2(200, 64)
+offset_right = 200.0
+offset_bottom = 64.0
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Test Recipe"
+icon = ExtResource("1_3yyji")
+expand_icon = true

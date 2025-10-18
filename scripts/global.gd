@@ -13,9 +13,28 @@ var items = {
 		"name": "Worm Bait",
 		"description": "Attracts fishies.",
 	},
+	"fish_bait": {
+		"name": "Fish Bait",
+		"description": "Attracts things that eat fishes.",
+	},
 	"wood_bait": {
 		"name": "Wood Bait",
 		"description": "Attracts gear. Somehow. Don't question it.",
+	},
+	"medkit": {
+		"name": "Medkit",
+		"description": "Heals 50% health.",
+	}
+}
+
+var recipes = {
+	"fish_bait": {
+		"requires": [
+			{
+				"id": "fish",
+				"amount": 1
+			}
+		]
 	}
 }
 

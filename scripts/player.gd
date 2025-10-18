@@ -48,11 +48,12 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("move_right"):
 		velocity.x  += 200
 		
-	var i = 0
-	while i < inventory.size():
-		if Input.is_action_pressed("hotbar_item_" + str(i)):
-			selected_item = i
-			
-		i += 1
+	if not busy:
+		var i = 0
+		while i < inventory.size():
+			if Input.is_action_pressed("hotbar_item_" + str(i)):
+				selected_item = i
+				
+			i += 1
 	
 	if can_move: move_and_slide()

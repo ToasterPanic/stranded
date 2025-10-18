@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b77o21sm7rvic"]
+[gd_scene load_steps=32 format=3 uid="uid://b77o21sm7rvic"]
 
 [ext_resource type="Texture2D" uid="uid://cu3pcbv4atndf" path="res://textures/island.png" id="1_lnu2h"]
 [ext_resource type="Script" uid="uid://v55i6ksw6cxw" path="res://scripts/game.gd" id="1_p57ef"]
@@ -18,6 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://cc6cke5o8cls7" path="res://textures/thirst.png" id="11_kvuet"]
 [ext_resource type="Texture2D" uid="uid://bgbtipb5bxaxs" path="res://textures/sun.png" id="13_trtic"]
 [ext_resource type="Texture2D" uid="uid://ya4fjhnknclv" path="res://textures/moon.png" id="14_ir15t"]
+[ext_resource type="PackedScene" uid="uid://cydbcpxrcgr5b" path="res://scenes/crafting_recipe_button.tscn" id="19_264po"]
+[ext_resource type="Texture2D" uid="uid://35wwfu7y5x5k" path="res://textures/items/axe.png" id="20_1kice"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ssvqc"]
 size = Vector2(99999, 64)
@@ -54,6 +56,9 @@ radius = 64.0
 [sub_resource type="LabelSettings" id="LabelSettings_ssvqc"]
 font_size = 128
 outline_size = 12
+
+[sub_resource type="LabelSettings" id="LabelSettings_5newe"]
+font_size = 24
 
 [sub_resource type="LabelSettings" id="LabelSettings_dinhu"]
 font_size = 20
@@ -160,6 +165,13 @@ texture = ExtResource("7_ssvqc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FishingRod/Bobber"]
 shape = SubResource("CircleShape2D_264po")
+
+[node name="Line2D" type="Line2D" parent="FishingRod/Bobber"]
+points = PackedVector2Array(0, -32, 128, 0)
+width = 8.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="Campfire" type="Sprite2D" parent="."]
 position = Vector2(-1, 226)
@@ -327,6 +339,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Tension" type="Panel" parent="CanvasLayer/Control"]
+visible = false
 custom_minimum_size = Vector2(560, 72)
 layout_mode = 1
 anchors_preset = -1
@@ -377,8 +390,7 @@ grow_vertical = 2
 text = "100%"
 label_settings = SubResource("LabelSettings_ssvqc")
 
-[node name="Crafting" type="Panel" parent="CanvasLayer/Control"]
-visible = false
+[node name="Menu" type="Panel" parent="CanvasLayer/Control"]
 custom_minimum_size = Vector2(256, 72)
 layout_mode = 1
 anchors_preset = 8
@@ -394,16 +406,80 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("8_gee14")
 
-[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/Control/Crafting"]
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer/Control/Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("8_gee14")
+tab_alignment = 1
+current_tab = 0
+
+[node name="Crafting" type="HFlowContainer" parent="CanvasLayer/Control/Menu/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Scroll" type="ScrollContainer" parent="CanvasLayer/Control/Menu/TabContainer/Crafting"]
+custom_minimum_size = Vector2(200, 456)
+layout_mode = 2
+
+[node name="Box" type="VBoxContainer" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Scroll"]
+layout_mode = 2
+
+[node name="CraftingRecipeButton" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Scroll/Box" instance=ExtResource("19_264po")]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control/Menu/TabContainer/Crafting"]
+custom_minimum_size = Vector2(276, 0)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -38.0
+offset_top = -37.0
+offset_right = 38.0
+grow_horizontal = 2
+grow_vertical = 0
+text = " CRAFT! "
+
+[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 8.0
 offset_top = 8.0
+offset_right = -8.0
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
+
+[node name="Item" type="TextureRect" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel/HFlowContainer"]
+layout_mode = 2
+texture = ExtResource("20_1kice")
+
+[node name="NameLabel" type="Label" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel/HFlowContainer"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+text = "Name of the stinkin item"
+label_settings = SubResource("LabelSettings_5newe")
+horizontal_alignment = 1
+
+[node name="Next Up" type="HFlowContainer" parent="CanvasLayer/Control/Menu/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="HintControls" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -428,9 +504,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -86.0
+offset_left = 480.0
 offset_top = -34.0
-offset_right = 86.0
+offset_right = 652.0
 offset_bottom = 34.0
 grow_horizontal = 2
 grow_vertical = 2

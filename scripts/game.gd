@@ -6,11 +6,31 @@ var world_time = 0
 var world_state = "day"
 
 var item_button_scene = preload("res://scenes/item_button.tscn")
+var crafting_recipe_button_scene = preload("res://scenes/crafting_recipe_button.tscn")
 var hovered_item = -1
 
 @onready var player = $Player
 @onready var hud = $CanvasLayer/Control
 @onready var hotbar = hud.get_node("Hotbar")
+
+func _ready() -> void:
+	var crafting_menu = hud.get_node("Menu/TabContainer/Crafting")
+	var list = crafting_menu.get_node("Scroll/Box")
+	var panel = crafting_menu.get_node("Panel")
+	
+	list.get_node("CraftingRecipeButton").free()
+	
+	for key in Global.recipes:
+		var value = Global.recipes[key]
+		
+		var crafting_recipe_button = crafting_recipe_button_scene.instantiate()
+		
+		list.add_child(crafting_recipe_button)
+		
+		var item = Global.items[key]
+		
+		crafting_recipe_button.icon = load("res://textures/items/"+ key +".png")
+		crafting_recipe_button.text = item.name
 
 func _process(delta: float) -> void:
 	time += delta
@@ -98,3 +118,12 @@ func _item_button_mouse_entered(item_button: Node):
 	
 func _item_button_mouse_exited(item_button: Node):
 	hovered_item = -1
+	
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("inventory"):
+		hud.get_node("Menu").visible = not hud.get_node("Menu").visible
+		
+		if hud.get_node("Menu").visible:
+			player.busy = true
+		else:
+			player.busy = false
