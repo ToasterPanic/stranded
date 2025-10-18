@@ -5,6 +5,10 @@ var items = {
 		"name": "Planks",
 		"description": "Used mostly for crafting.",
 	},
+	"cloth": {
+		"name": "Cloth",
+		"description": "Used for crafting.",
+	},
 	"fish": {
 		"name": "Fish",
 		"description": "Quite delicious.",
@@ -24,18 +28,77 @@ var items = {
 	"medkit": {
 		"name": "Medkit",
 		"description": "Heals 50% health.",
+	},
+	"bug_net": {
+		"name": "Bug Net",
+		"description": "Catches bugs.",
 	}
 }
 
 var recipes = {
 	"fish_bait": {
-		"requires": [
+		"ingredients": [
 			{
 				"id": "fish",
 				"amount": 1
 			}
 		]
+	},
+	"bug_net": {
+		"amount": 1,
+		"ingredients": [
+			{
+				"id": "planks",
+				"amount": 1
+			},
+			{
+				"id": "cloth",
+				"amount": 2
+			},
+		]
 	}
+}
+
+var enemies = {
+	"mosquito": preload("res://scenes/mosquito.tscn"),
+	"shark": preload("res://scenes/shark.tscn"), 
+	"zombie": preload("res://scenes/zombie.tscn")
+}
+
+var nights = {
+	0: {
+		"hazards": [],
+		"enemies": [
+			"mosquito"
+		],
+	},
+	1: {
+		"hazards": [
+			"rain"
+		],
+		"enemies": [
+			"mosquito"
+		],
+	},
+	2: {
+		"hazards": [
+			"rain"
+		],
+		"enemies": [
+			"mosquito",
+			"shark"
+		],
+	},
+	3: {
+		"hazards": [
+			"rain",
+			"thunder"
+		],
+		"enemies": [
+			"mosquito",
+			"shark"
+		],
+	},
 }
 
 var loot_tables = {
@@ -53,11 +116,6 @@ var loot_tables = {
 			"id": "fish_bait",
 			"chance": 1
 		},
-		{
-			"id": "fish",
-			"amount": 0,
-			"chance": 2
-		},
 	],
 	"gear_fishing": [
 		{
@@ -68,6 +126,15 @@ var loot_tables = {
 		{
 			"id": "planks",
 			"chance": 10
+		},
+		{
+			"id": "cloth",
+			"chance": 10
+		},
+		{
+			"id": "cloth",
+			"amount": 2,
+			"chance": 3
 		}
 	]
 }

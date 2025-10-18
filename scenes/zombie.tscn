@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://icnh3dfgs5d1"]
+
+[ext_resource type="Script" uid="uid://ditb04gweug51" path="res://scripts/zombie.gd" id="1_httt1"]
+[ext_resource type="Texture2D" uid="uid://tbksjij0i3rs" path="res://textures/zombie.png" id="2_xepks"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_httt1"]
+radius = 24.0
+height = 128.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xepks"]
+radius = 32.0
+height = 128.0
+
+[node name="Zombie" type="CharacterBody2D"]
+script = ExtResource("1_httt1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_httt1")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_xepks")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CapsuleShape2D_xepks")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

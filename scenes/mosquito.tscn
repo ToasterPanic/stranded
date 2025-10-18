@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://cokmj61ewxd2u"]
+
+[ext_resource type="Script" uid="uid://5rqngsi6q05s" path="res://scripts/mosquito.gd" id="1_u7nif"]
+[ext_resource type="Texture2D" uid="uid://blwx1vke77yau" path="res://textures/mosquito.png" id="2_u7nif"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_u7nif"]
+radius = 64.0
+height = 128.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8fycp"]
+radius = 60.0
+height = 124.0
+
+[node name="Mosquito" type="CharacterBody2D"]
+script = ExtResource("1_u7nif")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_u7nif")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CapsuleShape2D_u7nif")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_8fycp")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

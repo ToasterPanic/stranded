@@ -43,10 +43,19 @@ func _process(delta: float) -> void:
 	velocity.y += 20
 	velocity.x = 0
 	
+	rotation_degrees /= 1.1
+	$Sprite.position.y /= 1.1
+	
 	if Input.is_action_pressed("move_left"):
 		velocity.x -= 200
+		$Sprite.scale.x = 1
 	if Input.is_action_pressed("move_right"):
 		velocity.x  += 200
+		$Sprite.scale.x = -1
+		
+	if abs(velocity.x) > 0:
+		rotation_degrees = sin(get_parent().time * 12) * 5
+		$Sprite.position.y = (sin(get_parent().time * 24) * 5) - 5
 		
 	if not busy:
 		var i = 0

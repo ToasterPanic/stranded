@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://b77o21sm7rvic"]
+[gd_scene load_steps=35 format=3 uid="uid://b77o21sm7rvic"]
 
 [ext_resource type="Texture2D" uid="uid://cu3pcbv4atndf" path="res://textures/island.png" id="1_lnu2h"]
 [ext_resource type="Script" uid="uid://v55i6ksw6cxw" path="res://scripts/game.gd" id="1_p57ef"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://dam2angeehhcj" path="res://textures/hunger.png" id="10_dinhu"]
 [ext_resource type="Texture2D" uid="uid://cc6cke5o8cls7" path="res://textures/thirst.png" id="11_kvuet"]
 [ext_resource type="Texture2D" uid="uid://bgbtipb5bxaxs" path="res://textures/sun.png" id="13_trtic"]
+[ext_resource type="PackedScene" uid="uid://icnh3dfgs5d1" path="res://scenes/zombie.tscn" id="14_5newe"]
 [ext_resource type="Texture2D" uid="uid://ya4fjhnknclv" path="res://textures/moon.png" id="14_ir15t"]
 [ext_resource type="PackedScene" uid="uid://cydbcpxrcgr5b" path="res://scenes/crafting_recipe_button.tscn" id="19_264po"]
 [ext_resource type="Texture2D" uid="uid://35wwfu7y5x5k" path="res://textures/items/axe.png" id="20_1kice"]
@@ -50,14 +51,20 @@ initial_velocity_max = 75.0
 gravity = Vector3(0, 98, 0)
 alpha_curve = SubResource("CurveTexture_264po")
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_iywne"]
-radius = 64.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5newe"]
+radius = 24.0
+height = 128.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_ssvqc"]
 font_size = 128
 outline_size = 12
 
 [sub_resource type="LabelSettings" id="LabelSettings_5newe"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_1kice"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_37s47"]
 font_size = 24
 
 [sub_resource type="LabelSettings" id="LabelSettings_dinhu"]
@@ -67,6 +74,12 @@ outline_color = Color(0, 0, 0, 1)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_p57ef")
+
+[node name="Spawn1" type="Node2D" parent="."]
+position = Vector2(-2000, 0)
+
+[node name="Spawn2" type="Node2D" parent="."]
+position = Vector2(2000, 0)
 
 [node name="DaySky" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(9999999, 9999999)
@@ -112,6 +125,10 @@ texture = ExtResource("2_lbhrr")
 position = Vector2(3072, 0)
 texture = ExtResource("2_lbhrr")
 
+[node name="Water4" type="Sprite2D" parent="Water"]
+position = Vector2(-3072, 0)
+texture = ExtResource("2_lbhrr")
+
 [node name="Water2" type="Sprite2D" parent="."]
 position = Vector2(0, -80)
 scale = Vector2(0.75, 0.75)
@@ -119,6 +136,10 @@ texture = ExtResource("3_iywne")
 
 [node name="Water4" type="Sprite2D" parent="Water2"]
 position = Vector2(3072, 0)
+texture = ExtResource("3_iywne")
+
+[node name="Water5" type="Sprite2D" parent="Water2"]
+position = Vector2(-3072, 0)
 texture = ExtResource("3_iywne")
 
 [node name="Camera" type="Camera2D" parent="."]
@@ -129,12 +150,16 @@ position_smoothing_enabled = true
 position_smoothing_speed = 25.0
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 5
+collision_mask = 5
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
 polygon = PackedVector2Array(-976, 555, -413, 294, 420, 294, 1031, 553)
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 position = Vector2(-19, 454)
+collision_layer = 5
+collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
 shape = SubResource("RectangleShape2D_ssvqc")
@@ -145,6 +170,8 @@ texture = ExtResource("7_u5sy4")
 script = ExtResource("6_dinhu")
 
 [node name="Area" type="Area2D" parent="FishingRod"]
+collision_layer = 5
+collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FishingRod/Area"]
 shape = SubResource("CircleShape2D_kvuet")
@@ -159,6 +186,8 @@ text = "[E] Go Fish"
 label_settings = SubResource("LabelSettings_u5sy4")
 
 [node name="Bobber" type="RigidBody2D" parent="FishingRod"]
+collision_layer = 4
+collision_mask = 4
 
 [node name="Sprite" type="Sprite2D" parent="FishingRod/Bobber"]
 texture = ExtResource("7_ssvqc")
@@ -206,10 +235,13 @@ texture_scale = 3.0
 script = ExtResource("4_iywne")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-shape = SubResource("CircleShape2D_iywne")
+shape = SubResource("CapsuleShape2D_5newe")
 
 [node name="Sprite" type="Sprite2D" parent="Player"]
 texture = ExtResource("4_lbhrr")
+
+[node name="Zombie" parent="." instance=ExtResource("14_5newe")]
+position = Vector2(-404, 133)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -231,7 +263,7 @@ offset_right = 416.0
 offset_bottom = 152.0
 theme = ExtResource("8_gee14")
 
-[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/Control/Icons"]
+[node name="Container" type="HFlowContainer" parent="CanvasLayer/Control/Icons"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -242,7 +274,7 @@ offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Health" type="TextureProgressBar" parent="CanvasLayer/Control/Icons/HFlowContainer"]
+[node name="Health" type="TextureProgressBar" parent="CanvasLayer/Control/Icons/Container"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 value = 100.0
@@ -251,7 +283,7 @@ texture_under = ExtResource("9_kvpfn")
 texture_progress = ExtResource("9_kvpfn")
 tint_under = Color(0, 0, 0, 1)
 
-[node name="Hunger" type="TextureProgressBar" parent="CanvasLayer/Control/Icons/HFlowContainer"]
+[node name="Hunger" type="TextureProgressBar" parent="CanvasLayer/Control/Icons/Container"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 value = 100.0
@@ -260,7 +292,7 @@ texture_under = ExtResource("10_dinhu")
 texture_progress = ExtResource("10_dinhu")
 tint_under = Color(0, 0, 0, 1)
 
-[node name="Thirst" type="TextureProgressBar" parent="CanvasLayer/Control/Icons/HFlowContainer"]
+[node name="Thirst" type="TextureProgressBar" parent="CanvasLayer/Control/Icons/Container"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 value = 100.0
@@ -418,9 +450,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("8_gee14")
 tab_alignment = 1
-current_tab = 0
+current_tab = 1
 
 [node name="Crafting" type="HFlowContainer" parent="CanvasLayer/Control/Menu/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -438,21 +471,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(276, 0)
 layout_mode = 2
 
-[node name="Button" type="Button" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -38.0
-offset_top = -37.0
-offset_right = 38.0
-grow_horizontal = 2
-grow_vertical = 0
-text = " CRAFT! "
-
-[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel"]
+[node name="Container" type="HFlowContainer" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -465,21 +484,86 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Item" type="TextureRect" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel/HFlowContainer"]
+[node name="Item" type="TextureRect" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel/Container"]
 layout_mode = 2
 texture = ExtResource("20_1kice")
 
-[node name="NameLabel" type="Label" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel/HFlowContainer"]
+[node name="NameLabel" type="Label" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel/Container"]
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
-text = "Name of the stinkin item"
+text = "Name of the stinker"
 label_settings = SubResource("LabelSettings_5newe")
 horizontal_alignment = 1
 
+[node name="DescLabel" type="Label" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel/Container"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+text = "Description of the stinker."
+label_settings = SubResource("LabelSettings_1kice")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="RequiresLabel" type="Label" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel/Container"]
+custom_minimum_size = Vector2(256, 48)
+layout_mode = 2
+text = "REQUIRES:"
+label_settings = SubResource("LabelSettings_5newe")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="IngredientsLabel" type="Label" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel/Container"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+text = "x1 test test2
+x2 test 32352
+x3 isunadiujiudsajg"
+horizontal_alignment = 1
+
+[node name="CraftButton" type="Button" parent="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -44.5
+offset_top = -37.0
+offset_right = 44.5
+grow_horizontal = 2
+grow_vertical = 0
+text = " CRAFT! "
+
 [node name="Next Up" type="HFlowContainer" parent="CanvasLayer/Control/Menu/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Menu/TabContainer/Next Up"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HAZARDS:"
+label_settings = SubResource("LabelSettings_37s47")
+horizontal_alignment = 1
+
+[node name="Hazards" type="Label" parent="CanvasLayer/Control/Menu/TabContainer/Next Up"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/Menu/TabContainer/Next Up"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ENEMIES:"
+label_settings = SubResource("LabelSettings_37s47")
+horizontal_alignment = 1
+
+[node name="Enemies" type="Label" parent="CanvasLayer/Control/Menu/TabContainer/Next Up"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
 
 [node name="HintControls" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -519,3 +603,5 @@ text = "[font size=24]Planks[/font]
 test test2"
 fit_content = true
 scroll_active = false
+
+[connection signal="pressed" from="CanvasLayer/Control/Menu/TabContainer/Crafting/Panel/CraftButton" to="." method="_on_craft_button_pressed"]
