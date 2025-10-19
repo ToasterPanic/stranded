@@ -19,11 +19,15 @@ var items = {
 	},
 	"fish_bait": {
 		"name": "Fish Bait",
-		"description": "Attracts things that eat fishes.",
+		"description": "Attracts things that eat fishies.",
 	},
 	"wood_bait": {
 		"name": "Wood Bait",
-		"description": "Attracts gear. Somehow. Don't question it.",
+		"description": "Attracts materials. Somehow. Don't question it.",
+	},
+	"metal_bait": {
+		"name": "Metal Bait",
+		"description": "Attracts metal materials... what the hell is in this?",
 	},
 	"medkit": {
 		"name": "Medkit",
@@ -36,6 +40,30 @@ var items = {
 	"wooden_spikes": {
 		"name": "Wooden Spikes",
 		"description": "A trap for unsuspecting intruders.\n\n[Left Click] to place.",
+	},
+	"shovel": {
+		"name": "Shovel",
+		"description": "Use it to get worms.",
+	},
+	"axe": {
+		"name": "Axe",
+		"description": "Although you don't have trees, this CAN be used to chop your enemies.",
+	},
+	"scrap_metal": {
+		"name": "Scrap Metal",
+		"description": "Some rusty metal. Used for crafting.",
+	},
+	"battery": {
+		"name": "Battery",
+		"description": "An old, rusty battery. No acid leaking out. Might be usable...",
+	},
+	"makeshift_laser_pointer": {
+		"name": "Makeshift Laser Pointer",
+		"description": "Shoot it at an airplane, and they might see you!",
+	},
+	"computer_chip": {
+		"name": "Computer Chip",
+		"description": "You can use this in electronics. If it even works.",
 	}
 }
 
@@ -44,6 +72,24 @@ var recipes = {
 		"ingredients": [
 			{
 				"id": "fish",
+				"amount": 1
+			}
+		]
+	},
+	"wood_bait": {
+		"amount": 2,
+		"ingredients": [
+			{
+				"id": "planks",
+				"amount": 1
+			}
+		]
+	},
+	"metal_bait": {
+		"amount": 2,
+		"ingredients": [
+			{
+				"id": "scrap_metal",
 				"amount": 1
 			}
 		]
@@ -61,6 +107,40 @@ var recipes = {
 			},
 		]
 	},
+	"shovel": {
+		"amount": 1,
+		"ingredients": [
+			{
+				"id": "planks",
+				"amount": 1
+			},
+			{
+				"id": "scrap_metal",
+				"amount": 2
+			},
+			{
+				"id": "cloth",
+				"amount": 1
+			},
+		]
+	},
+	"axe": {
+		"amount": 1,
+		"ingredients": [
+			{
+				"id": "planks",
+				"amount": 1
+			},
+			{
+				"id": "scrap_metal",
+				"amount": 2
+			},
+			{
+				"id": "cloth",
+				"amount": 1
+			},
+		]
+	},
 	"wooden_spikes": {
 		"amount": 1,
 		"ingredients": [
@@ -70,11 +150,15 @@ var recipes = {
 			}
 		]
 	},
-	"wood_bait": {
-		"amount": 2,
+	"makeshift_laser_pointer": {
+		"amount": 1,
 		"ingredients": [
 			{
-				"id": "planks",
+				"id": "scrap_metal",
+				"amount": 5
+			},
+			{
+				"id": "battery",
 				"amount": 1
 			}
 		]
@@ -157,6 +241,31 @@ var loot_tables = {
 		},
 		{
 			"id": "cloth",
+			"amount": 2,
+			"chance": 3
+		},
+		{
+			"id": "scrap_metal",
+			"amount": 2,
+			"chance": 3
+		}
+	],
+	"metal_fishing": [
+		{
+			"id": "battery",
+			"amount": 1,
+			"chance": 2
+		},
+		{
+			"id": "computer_chip",
+			"chance": 2
+		},
+		{
+			"id": "scrap_metal",
+			"chance": 12
+		},
+		{
+			"id": "scrap_metal",
 			"amount": 2,
 			"chance": 3
 		}

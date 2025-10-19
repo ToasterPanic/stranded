@@ -4,6 +4,7 @@ var time = 0
 
 var world_time = 0
 var world_state = "day"
+var day_counter = 0
 
 var lastSpawn = 0
 var next_fishing_loot_table = null
@@ -52,6 +53,8 @@ func _process(delta: float) -> void:
 		world_time += delta * (450 / 30)
 	else:
 		world_time += delta
+		
+	hud.get_node("Time/HFlowContainer/DayCounter").text = "Day\n" + str(day_counter)
 	
 	if world_time > 450:
 		world_time = 0
@@ -64,6 +67,18 @@ func _process(delta: float) -> void:
 			world_state = "day"
 			$Campfire/Light.visible = false
 			$Campfire/Fire.emitting = false
+			
+			day_counter += 1
+			
+			hud.get_node("Menu/TabContainer/Next Up/Hazards").text = ""
+			
+			for n in Global.nights[day_counter].hazards:
+				hud.get_node("Menu/TabContainer/Next Up/Hazards").text += n + "\n"
+				
+			hud.get_node("Menu/TabContainer/Next Up/Enemies").text = ""
+			
+			for n in Global.nights[day_counter].enemies:
+				hud.get_node("Menu/TabContainer/Next Up/Enemies").text += n + "\n"
 			
 	if world_state == "day":
 		$NightSky.modulate.a /= 1.1
@@ -81,7 +96,7 @@ func _process(delta: float) -> void:
 		lastSpawn += delta
 		if lastSpawn > 2.5:
 			lastSpawn = 0
-			var night = Global.nights[0]
+			var night = Global.nights[day_counter]
 			
 			var spawn = night.enemies[randi_range(0, night.enemies.size() - 1)]
 			var enemy = Global.enemies[spawn].instantiate()

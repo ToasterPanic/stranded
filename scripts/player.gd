@@ -60,6 +60,8 @@ func _process(delta: float) -> void:
 	
 	hunger -= delta / 3
 	thirst -= delta / 2.5
+	if hunger > 100: hunger = 100
+	if thirst > 100: thirst = 100
 	
 	rotation_degrees /= 1.1
 	$Sprite.position.y /= 1.1
@@ -80,10 +82,22 @@ func _process(delta: float) -> void:
 			busy = false
 			$Item/ItemSprite/SwingHitbox.position.y = 9e10
 			
-			if inventory[selected_item].id == "wood_bait":
+			if inventory[selected_item].id == "fish":
+				hunger += 25
+				
+				add_item("fish", -1)
+			elif inventory[selected_item].id == "worm_bait":
+				world.next_fishing_loot_table = "fish_fishing"
+				
+				add_item("worm_bait", -1)
+			elif inventory[selected_item].id == "wood_bait":
 				world.next_fishing_loot_table = "gear_fishing"
 				
 				add_item("wood_bait", -1)
+			elif inventory[selected_item].id == "metal_bait":
+				world.next_fishing_loot_table = "metal_fishing"
+				
+				add_item("metal_bait", -1)
 			elif inventory[selected_item].id == "wooden_spikes":
 				var wooden_spikes = wooden_spikes_scene.instantiate()
 			
