@@ -1,0 +1,170 @@
+[gd_scene load_steps=8 format=3 uid="uid://dhbkwyhwe644m"]
+
+[ext_resource type="Script" uid="uid://dxxkh3x8eq7jk" path="res://scripts/title_screen.gd" id="1_s4lrb"]
+[ext_resource type="Texture2D" uid="uid://dow4p10khtfpg" path="res://textures/toasterpanic-logo.png" id="2_mgrm8"]
+[ext_resource type="Texture2D" uid="uid://cjgke7v088rvy" path="res://textures/siege-logo.png" id="3_dc4i4"]
+[ext_resource type="Texture2D" uid="uid://cu3pcbv4atndf" path="res://textures/island.png" id="4_e54dn"]
+[ext_resource type="Texture2D" uid="uid://m0mkaj3b1wqk" path="res://textures/water.png" id="5_3yumr"]
+[ext_resource type="Texture2D" uid="uid://idlxmua6nw4y" path="res://textures/water2.png" id="6_cs5ya"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_s4lrb"]
+font_size = 64
+
+[node name="TitleScreen" type="Node2D"]
+script = ExtResource("1_s4lrb")
+
+[node name="NightSky" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(9999999, 9999999)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4999999.5
+offset_top = -4999999.5
+offset_right = 4999999.5
+offset_bottom = 4999999.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.007451308, 0.035174757, 0.12987915, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2000.0
+offset_bottom = 2000.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Buttons" type="VBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="CanvasLayer/Control/Buttons"]
+layout_mode = 2
+text = "STRANDED!"
+label_settings = SubResource("LabelSettings_s4lrb")
+
+[node name="NewGame" type="Button" parent="CanvasLayer/Control/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = " New Game"
+alignment = 0
+
+[node name="LoadGame" type="Button" parent="CanvasLayer/Control/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = " Load Game"
+alignment = 0
+
+[node name="Settings" type="Button" parent="CanvasLayer/Control/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = " Settings"
+alignment = 0
+
+[node name="Credits" type="Button" parent="CanvasLayer/Control/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = " Credits"
+alignment = 0
+
+[node name="Quit" type="Button" parent="CanvasLayer/Control/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = " Quit"
+alignment = 0
+
+[node name="Logos" type="VBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="ToasterPanic" type="TextureButton" parent="CanvasLayer/Control/Logos"]
+layout_mode = 2
+texture_normal = ExtResource("2_mgrm8")
+
+[node name="Siege" type="TextureButton" parent="CanvasLayer/Control/Logos"]
+layout_mode = 2
+texture_normal = ExtResource("3_dc4i4")
+
+[node name="BlackFade" type="ColorRect" parent="CanvasLayer/Control"]
+custom_minimum_size = Vector2(9999999, 9999999)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5000799.5
+offset_top = -5002449.5
+offset_right = 4999199.5
+offset_bottom = 4997549.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Island" type="Sprite2D" parent="."]
+position = Vector2(0, 67)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_e54dn")
+
+[node name="Water" type="Sprite2D" parent="."]
+position = Vector2(0, -80)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("5_3yumr")
+
+[node name="Water3" type="Sprite2D" parent="Water"]
+position = Vector2(3072, 0)
+texture = ExtResource("5_3yumr")
+
+[node name="Water4" type="Sprite2D" parent="Water"]
+position = Vector2(-3072, 0)
+texture = ExtResource("5_3yumr")
+
+[node name="Water2" type="Sprite2D" parent="."]
+position = Vector2(0, -80)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("6_cs5ya")
+
+[node name="Water4" type="Sprite2D" parent="Water2"]
+position = Vector2(3072, 0)
+texture = ExtResource("6_cs5ya")
+
+[node name="Water5" type="Sprite2D" parent="Water2"]
+position = Vector2(-3072, 0)
+texture = ExtResource("6_cs5ya")
+
+[node name="ColorRect" type="ColorRect" parent="Water2"]
+offset_left = -49999.0
+offset_top = 750.025
+offset_right = 50000.0
+offset_bottom = 100749.02
+color = Color(0.38431373, 0.43529412, 1, 1)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 2000)
+
+[connection signal="pressed" from="CanvasLayer/Control/Buttons/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Logos/ToasterPanic" to="." method="_on_toaster_panic_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Logos/Siege" to="." method="_on_siege_pressed"]

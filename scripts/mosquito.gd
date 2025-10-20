@@ -18,14 +18,14 @@ func _process(delta: float) -> void:
 			$Sprite.scale.x = 1
 		
 	if abs(velocity.x) > 0:
-		rotation_degrees = sin(get_parent().time * 6) * 5
-		$Sprite.position.y = (sin(get_parent().time * 12) * 5) - 5
+		rotation_degrees = sin(get_parent().get_parent().time * 6) * 5
+		$Sprite.position.y = (sin(get_parent().get_parent().time * 12) * 5) - 5
 	
 	move_and_slide()
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.get_name() == "Player":
-		body.health -= 5
+		body.health -= 4
 		
 		position = Vector2(9e10, 9e10)
 		queue_free()

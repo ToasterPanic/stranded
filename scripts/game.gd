@@ -2,15 +2,21 @@ extends Node2D
 
 var time = 0
 
-var world_time = 0
-var world_state = "day"
-var day_counter = 0
+var world_time = 99999999
+var world_state = "night"
+var day_counter = -1
 
 var lastSpawn = 0
+var spawns = 0
 var next_fishing_loot_table = null
+
+var raining = true
+
+var plane_scene = preload("res://scenes/plane.tscn")
 
 var item_button_scene = preload("res://scenes/item_button.tscn")
 var crafting_recipe_button_scene = preload("res://scenes/crafting_recipe_button.tscn")
+var enemy_entry_scene = preload("res://scenes/enemy_entry.tscn")
 var hovered_item = -1
 
 @onready var player = $Player
@@ -20,10 +26,20 @@ var hovered_item = -1
 @onready var crafting_menu_list = crafting_menu.get_node("Scroll/Box")
 @onready var crafting_menu_panel = crafting_menu.get_node("Panel")
 
+func set_day(day: int):
+	day_counter = day
+	
+func set_time(time: int):
+	world_time = time
+
 func _ready() -> void:
 	var crafting_menu = hud.get_node("Menu/TabContainer/Crafting")
 	var list = crafting_menu.get_node("Scroll/Box")
 	var panel = crafting_menu.get_node("Panel")
+	
+	LimboConsole.register_command(player.add_item, "add_item", "Give item or take em away,.,.,")
+	LimboConsole.register_command(set_day, "set_day", "Set the crrent day")
+	LimboConsole.register_command(set_time, "set_time", "Set the crrent timenjiadng")
 	
 	list.get_node("CraftingRecipeButton").free()
 	
@@ -50,12 +66,13 @@ func _process(delta: float) -> void:
 	
 	if world_state == "night":
 		# Nights should be 60 seconds long
-		world_time += delta * (450 / 30)
+		world_time += delta * (450 / 60)
 	else:
 		world_time += delta
 		
 	hud.get_node("Time/HFlowContainer/DayCounter").text = "Day\n" + str(day_counter)
 	
+	hud.get_node("Hotbar").custom_minimum_size.y = hud.get_node("Hotbar/Container").size.y + 16
 	if world_time > 450:
 		world_time = 0
 		
@@ -63,25 +80,51 @@ func _process(delta: float) -> void:
 			world_state = "night"
 			$Campfire/Light.visible = true
 			$Campfire/Fire.emitting = true
+			$Campfire/Smoke.emitting = true
+			spawns = 0
+			
+			for n in Global.nights[day_counter].hazards:
+				if n == "rain":
+					raining = true
+					$Rain/Particles.emitting = true
+					$Rain/Particles2.emitting = true
+					$Rain/Particles3.emitting = true
 		else:
 			world_state = "day"
+			
+			for n in $Enemies.get_children():
+				n.queue_free()
+				
 			$Campfire/Light.visible = false
 			$Campfire/Fire.emitting = false
+			$Campfire/Smoke.emitting = false
+			$Campfire/BlackSmoke.emitting = false
+			
+			raining = false
+			$Rain/Particles.emitting = false
+			$Rain/Particles2.emitting = false
+			$Rain/Particles3.emitting = false
 			
 			day_counter += 1
 			
-			hud.get_node("Menu/TabContainer/Next Up/Hazards").text = ""
+			hud.get_node("Menu/TabContainer/Next Up/Container/Hazards").text = ""
 			
 			for n in Global.nights[day_counter].hazards:
-				hud.get_node("Menu/TabContainer/Next Up/Hazards").text += n + "\n"
+				hud.get_node("Menu/TabContainer/Next Up/Container/Hazards").text += n + "\n"
 				
-			hud.get_node("Menu/TabContainer/Next Up/Enemies").text = ""
+			for n in hud.get_node("Menu/TabContainer/Next Up/Container/Enemies").get_children():
+				n.queue_free()
 			
 			for n in Global.nights[day_counter].enemies:
-				hud.get_node("Menu/TabContainer/Next Up/Enemies").text += n + "\n"
+				var enemy_entry = enemy_entry_scene.instantiate()
+				
+				enemy_entry.get_node("RichTextLabel").text = '''[font size=32]%s[/font]
+%s''' % [Global.enemies[n].name, Global.enemies[n].description]
+				
+				hud.get_node("Menu/TabContainer/Next Up/Container/Enemies").add_child(enemy_entry)
 			
 	if world_state == "day":
-		$NightSky.modulate.a /= 1.1
+		$NightSky.modulate.a /= 2
 		hud.get_node("Time/HFlowContainer/Day").visible = true
 		hud.get_node("Time/HFlowContainer/Day").value = 450 - world_time
 		hud.get_node("Time/HFlowContainer/Night").visible = false
@@ -96,19 +139,27 @@ func _process(delta: float) -> void:
 		lastSpawn += delta
 		if lastSpawn > 2.5:
 			lastSpawn = 0
+			spawns += 1
+			
+			if spawns == 15:
+				var plane = plane_scene.instantiate()
+				
+				plane.position = Vector2(1200, -300)
+				add_child(plane)
+				
 			var night = Global.nights[day_counter]
 			
 			var spawn = night.enemies[randi_range(0, night.enemies.size() - 1)]
-			var enemy = Global.enemies[spawn].instantiate()
+			var enemy = Global.enemies[spawn].scene.instantiate()
 			
 			enemy.player = player
 			
 			if randi_range(0, 1) == 0:
-				enemy.position = $Spawn1.position
+				enemy.global_position = $Spawn1.global_position
 			else:
-				enemy.position = $Spawn2.position
+				enemy.global_position = $Spawn2.global_position
 			
-			add_child(enemy)
+			$Enemies.add_child(enemy)
 	
 	$Water.position.x = sin(time * 2) * 200
 	$Water2.position.x = sin((time + 7) * 2.1) * 200
@@ -234,3 +285,7 @@ func _on_craft_button_pressed() -> void:
 		recipe.amount = 1
 
 	player.add_item(crafting_menu_panel.get_meta("recipe"), recipe.amount)
+
+
+func _on_main_menu_button_pressed() -> void:
+	pass # Replace with function body.

@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://cr3h07glbm5gx"]
+
+[ext_resource type="Texture2D" uid="uid://nh3j50hipg15" path="res://textures/plane.png" id="1_206p1"]
+[ext_resource type="Texture2D" uid="uid://cr2tg13wjjam6" path="res://textures/alertness.png" id="2_md2q8"]
+[ext_resource type="Script" uid="uid://b3gbk648o8omt" path="res://scripts/plane.gd" id="2_n0b6s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bhx41"]
+radius = 72.0
+
+[node name="Plane" type="Sprite2D"]
+texture = ExtResource("1_206p1")
+script = ExtResource("2_n0b6s")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_bhx41")
+
+[node name="Alertness" type="TextureProgressBar" parent="."]
+visible = false
+offset_left = -32.0
+offset_top = -96.0
+offset_right = 96.0
+offset_bottom = 32.0
+scale = Vector2(0.5, 0.5)
+value = 25.0
+fill_mode = 3
+texture_under = ExtResource("2_md2q8")
+texture_progress = ExtResource("2_md2q8")
+tint_under = Color(0, 0, 0, 1)

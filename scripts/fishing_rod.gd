@@ -83,6 +83,7 @@ func _process(delta: float) -> void:
 					hud.get_node("Tension").visible = true
 	else:
 		hud.get_node("Tension").visible = false
+		hud.get_node("Hotbar").visible = true
 		camera.zoom.x += (1 - camera.zoom.x) * 0.1
 		camera.zoom.y = camera.zoom.x
 		camera.position = Vector2(0, 0)
@@ -131,6 +132,7 @@ func _process(delta: float) -> void:
 					break
 					
 				hud.get_node("Tension").visible = false
+				hud.get_node("Hotbar").visible = false
 				
 				fishing = true
 				reeling = false

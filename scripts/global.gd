@@ -64,10 +64,47 @@ var items = {
 	"computer_chip": {
 		"name": "Computer Chip",
 		"description": "You can use this in electronics. If it even works.",
+	},
+	"plastic": {
+		"name": "Plastic",
+		"description": "Scrap plastic. Used in crafting",
+	},
+	"smoke_starter": {
+		"name": "Smoke Starter",
+		"description": "Makes your fire extremely smoky for a short period of time. One-time use.",
+	},
+	"unpurified_water": {
+		"name": "Water (Unpurified)",
+		"description": "Wouldn't recommend drinking this.",
+	},
+	"purified_water": {
+		"name": "Water (Safe)",
+		"description": "Some nice, clean water.",
+	},
+	"umbrella": {
+		"name": "Umbrella",
+		"description": "Provides shelter from the rain.",
 	}
 }
 
 var recipes = {
+	"unpurified_water": {
+		"ingredients": [
+			{}
+		]
+	},
+	"purified_water": {
+		"ingredients": [
+			{
+				"id": "unpurified_water",
+				"amount": 1
+			},
+			{
+				"id": "cloth",
+				"amount": 1
+			}
+		]
+	},
 	"fish_bait": {
 		"ingredients": [
 			{
@@ -162,16 +199,72 @@ var recipes = {
 				"amount": 1
 			}
 		]
+	},
+	"smoke_starter": {
+		"amount": 1,
+		"ingredients": [
+			{
+				"id": "scrap_metal",
+				"amount": 1
+			},
+			{
+				"id": "plastic",
+				"amount": 3
+			},
+			{
+				"id": "planks",
+				"amount": 1
+			}
+		]
+	}
+}
+
+var hazards = {
+	"rain": {
+		"name": "Rain",
+		"description": """It rains on you. Being cold and wet isn't good for your health, I believe.
+		
+Counters: Umbrellas"""
 	}
 }
 
 var enemies = {
-	"mosquito": preload("res://scenes/mosquito.tscn"),
-	"shark": preload("res://scenes/shark.tscn"), 
-	"zombie": preload("res://scenes/zombie.tscn")
+	"mosquito": {
+		"name": "Mosquitos",
+		"scene": preload("res://scenes/mosquito.tscn"),
+		"description": """Nasty jerk. Spreads diseases. Hurts you.
+		
+Counters: Bug nets"""
+	},
+	"shark": {
+		"name": "Sharks",
+		"scene": preload("res://scenes/shark.tscn"),
+		"description": """Don't usually attack people, but these guys will go up on the surface to getcha.
+		
+Counters: Spikes, walls"""
+	},
+	"zombie": {
+		"name": "Zombies",
+		"scene": preload("res://scenes/zombie.tscn"),
+		"description": """Where they came from is beyond me. What you need to know is that they want your brains...
+		
+Counters: Walls"""
+	},
+	"ufo": {
+		"name": "Flying Saucers",
+		"scene": preload("res://scenes/zombie.tscn"),
+		"description": """These guys want to experiment on you. Or something. I don't know, I'm just a description.
+		
+Counters: Tinfoil hats"""
+	},
 }
 
 var nights = {
+	-1: {
+		"hazards": [],
+		"enemies": [],
+		"length": 0,
+	},
 	0: {
 		"hazards": [],
 		"enemies": [
@@ -184,14 +277,13 @@ var nights = {
 			"rain"
 		],
 		"enemies": [
+			"shark",
 			"mosquito"
 		],
 		"length": 30,
 	},
 	2: {
-		"hazards": [
-			"rain"
-		],
+		"hazards": [],
 		"enemies": [
 			"mosquito",
 			"shark"
@@ -204,7 +296,28 @@ var nights = {
 		],
 		"enemies": [
 			"mosquito",
-			"shark"
+			"shark",
+			"ufo"
+		],
+	},
+	4: {
+		"hazards": [],
+		"enemies": [
+			"shark",
+			"ufo",
+			"zombie"
+		],
+	},
+	5: {
+		"hazards": [
+			"rain",
+			"thunder"
+		],
+		"enemies": [
+			"shark",
+			"ufo",
+			"zombie",
+			"mosquito"
 		],
 	},
 }
@@ -227,13 +340,8 @@ var loot_tables = {
 	],
 	"gear_fishing": [
 		{
-			"id": "medkit",
-			"amount": 1,
-			"chance": 2
-		},
-		{
 			"id": "planks",
-			"chance": 10
+			"chance": 14
 		},
 		{
 			"id": "cloth",
@@ -247,7 +355,7 @@ var loot_tables = {
 		{
 			"id": "scrap_metal",
 			"amount": 2,
-			"chance": 3
+			"chance": 5
 		}
 	],
 	"metal_fishing": [

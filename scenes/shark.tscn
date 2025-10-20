@@ -1,5 +1,28 @@
-[gd_scene load_steps=2 format=3 uid="uid://dn111fpywb2qw"]
+[gd_scene load_steps=5 format=3 uid="uid://dn111fpywb2qw"]
 
-[ext_resource type="PackedScene" uid="uid://icnh3dfgs5d1" path="res://scenes/zombie.tscn" id="1_8l5qy"]
+[ext_resource type="Script" uid="uid://k8r5wddy3g3" path="res://scripts/shark.gd" id="1_v5iaq"]
+[ext_resource type="Texture2D" uid="uid://ce8lps6jd81aj" path="res://textures/shark.png" id="2_po4rd"]
 
-[node name="Zombie" instance=ExtResource("1_8l5qy")]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v5iaq"]
+radius = 76.0
+height = 152.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_po4rd"]
+radius = 80.0
+height = 160.0
+
+[node name="Shart" type="CharacterBody2D"]
+script = ExtResource("1_v5iaq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_v5iaq")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_po4rd")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CapsuleShape2D_po4rd")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

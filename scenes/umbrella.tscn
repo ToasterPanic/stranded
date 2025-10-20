@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://dp6ish5ld80t3"]
+
+[ext_resource type="Script" uid="uid://dgmw0gi12ly38" path="res://scripts/umbrella.gd" id="1_6qus1"]
+[ext_resource type="Texture2D" uid="uid://oslamul8mvgy" path="res://textures/umbrella.png" id="2_6qus1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e1j6l"]
+size = Vector2(128, 128)
+
+[node name="Umbrella" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("1_6qus1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_6qus1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_e1j6l")
+
+[node name="UmbrellaArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="UmbrellaArea"]
+shape = SubResource("RectangleShape2D_e1j6l")
