@@ -6,6 +6,8 @@ All things considered, I think this game turned out pretty good. I didn't get as
 
 Credits are included in-game.
 
+### Try the game out [here!](https://gamejolt.com/games/stranded/1025344)
+
 ## Things to know
 - To win, you need to grab the attention of a plane during the night. You'll need to use a Smoke Starter, then point your Makeshift Laser Pointer at the plane to get its attention.
 - You need metal bait to get the parts you need for those two items.
